@@ -44,8 +44,8 @@ def main():
         print(Fore.RED, "INFO", Fore.RESET, f" : commit-message -> \"{commit_message}\"")
     
     run(f"git commit -m {commit_message}")
-    print(Fore.RED, "INFO", Fore.RESET, f"\n : Commit Success\n")
+    print("\n", Fore.RED, "INFO", Fore.RESET, f" : Commit Success\n")
     run("git push")
-    print(Fore.RED, "INFO", Fore.RESET, f"\n : Push Success")
+    print("\n", Fore.RED, "INFO", Fore.RESET, f" : Push Success")
 
 if __name__ == "__main__":main()
