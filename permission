@@ -1,0 +1,8 @@
+#!/usr/bin/env python3
+
+from os import system as run
+
+def main():
+    run("chmod a+x ./update ./setup ./main/*")
+
+if __name__ == "__main__":main()
