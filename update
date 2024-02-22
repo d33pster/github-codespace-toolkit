@@ -2,10 +2,17 @@
 
 from os import system as run
 from sys import argv as args, exit as escape
-from colorama import init, Fore
+from colorama import init as colorama_init, Fore
 
 def main():
-    init()
+    colorama_init()
+    # get version
+    with open("gct-version", "r") as vers:
+        version = vers.read().replace("\n","")
+    # print version
+    print("      ", Fore.BLUE, "GitHub CodeSpace Toolkit", Fore.RESET)
+    print("      ", Fore.BLUE, f"version {version}", Fore.RESET)
+    print("      ", Fore.BLACK, ":made by d33pster:", Fore.RESET)
     # setting check params
     commit_message = ""
     filename = ""
@@ -22,17 +29,23 @@ def main():
             escape()
     
     # assign values
-    if len(args)>2:
+    if len(args)>2:        
         filename = args[1]
         commit_message = args[2]
 
         run(f"git add {filename}")
-    else:
+        print(Fore.RED, "INFO", Fore.RESET, f" : filename -> {filename}")
+        print(Fore.RED, "INFO", Fore.RESET, f" : commit-message -> \"{commit_message}\"")
+    else:        
         commit_message = args[1]
         
         run("git add *")
+        print(Fore.RED, "INFO", Fore.RESET, f" : Adding all files")
+        print(Fore.RED, "INFO", Fore.RESET, f" : commit-message -> \"{commit_message}\"")
     
     run(f"git commit -m {commit_message}")
+    print(Fore.RED, "INFO", Fore.RESET, f" : Commit Success")
     run("git push")
+    print(Fore.RED, "INFO", Fore.RESET, f" : Push Success")
 
 if __name__ == "__main__":main()

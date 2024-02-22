@@ -1,26 +1,47 @@
 #!/usr/bin/env python3
 
 from os import chdir, getcwd as pwd, popen as getOutputOf, system as run
-from os.path import join as joinPath
+from os.path import join as joinPath, dirname, exists as there
 from shutil import copyfile
 from colorama import init as colorama_init, Fore
+from re import search
+import subprocess
 
 def main():
     colorama_init()
-    print("      ", Fore.RED, "GitHub CodeSpace Toolkit", Fore.RESET)
-    print("      ", Fore.RED, "version 1.1", Fore.RESET)
+    with open(joinPath(pwd(), "main", "gct-version"), "r") as vers:
+        version = vers.read().replace("\n","")
+    print("      ", Fore.BLUE, "GitHub CodeSpace Toolkit", Fore.RESET)
+    print("      ", Fore.BLUE, f"version {version}", Fore.RESET)
+    print("      ", Fore.BLACK, ":made by d33pster:", Fore.RESET)
     print("      ", Fore.GREEN, "Install in Progress", Fore.RESET)
 
-    ## output supression start
     # get current directory
     currentDirectory = pwd()
+    print(Fore.RED, "INFO", Fore.RESET, f" : Retrieved current directory -> {currentDirectory}")
     # get main directory
     mainDirectory = joinPath(currentDirectory, "main")
+    print(Fore.RED, "INFO", Fore.RESET, f" : Resolved main directory -> {mainDirectory}")
     # go to main directory
     chdir(mainDirectory)
+    print(Fore.RED, "INFO", Fore.RESET, f" : Changed to {pwd()}")
     # get filenames
-    filenames = getOutputOf("ls").read().readLines().replace("\n", "")
-    # run files that need running
-    
+    filenames = getOutputOf("ls").readlines()
+    print(Fore.RED, "INFO", Fore.RESET, " : Retreived Filenames")
+    # run files that need running || copy files that need copying
+    target = dirname(currentDirectory)
+    print(Fore.RED, "INFO", Fore.RESET, f" : Resolved target Directory -> {target}")
+    for file in filenames:
+        file = file.replace("\n", "")
+        if search("-run$", file)!=None:
+            print(Fore.RED, "INFO", Fore.RESET, f" : Running {file.split('-')[1]}")
+            run(f"python {joinPath(mainDirectory, file)}")
+        else:
+            if there(joinPath(target, file)):
+                print(Fore.RED, "INFO", Fore.RESET, f" : Found existing file -> {file}")
+                run(f"rm -rf {joinPath(target, file)}")
+                print(Fore.RED, "INFO", Fore.RESET, f" : Deleted existing file -> {file}")
+            copyfile(joinPath(mainDirectory, file), joinPath(target, file))
+            print(Fore.RED, "INFO", Fore.RESET, f" : Copied file -> {file}")
 
 if __name__=="__main__":main()

@@ -2,10 +2,13 @@
 
 from os import system as run
 from sys import argv as args, exit as escape
-from colorama import init, Fore
+from colorama import init as colorama_init, Fore
 
 def main():
-    init()
+    colorama_init()
+    # get version
+    with open("gct-version", "r") as vers:
+        version = vers.read().replace("\n","")
     # setting check params
     commit_message = ""
     filename = ""
