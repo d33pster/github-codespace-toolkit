@@ -43,7 +43,7 @@ def main():
         print(Fore.RED, "INFO", Fore.RESET, f" : Adding all files")
         print(Fore.RED, "INFO", Fore.RESET, f" : commit-message -> \"{commit_message}\"")
     
-    run(f"git commit -m {commit_message} 2> /dev/null")
+    run(f"git commit -m \"{commit_message}\" 2> /dev/null")
     print(Fore.RED, "INFO", Fore.RESET, f" : Commit Success")
     run("git push 2> /dev/null")
     print(Fore.RED, "INFO", Fore.RESET, f" : Push Success")
