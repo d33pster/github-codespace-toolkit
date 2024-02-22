@@ -9,8 +9,6 @@ def main():
     currentDirectory = pwd()
     homeDirectory = expanduser("~")
 
-    # change to home directory and clone custombasher repo
-    chdir(homeDirectory)
     run("git clone https://github.com/d33pster/custombash.git 2> /dev/null")
 
     # get custombash directory and change to custombash directory
@@ -21,8 +19,8 @@ def main():
     subprocess.Popen([f"{joinPath(cbDirectory, 'setup-gct')}", f"{args[1]}"]).wait()
 
     # delete custombash directory
-    chdir(homeDirectory)
-    run("rm -rf custombash")
+    # chdir(homeDirectory)
+    # run("rm -rf custombash")
     
     # change back to the original directory
     chdir(currentDirectory)
