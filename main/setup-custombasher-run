@@ -14,7 +14,7 @@ def main():
     run("git clone https://github.com/d33pster/custombash.git 2> /dev/null")
 
     # get custombash directory and change to custombash directory
-    cbDirectory = joinPath(homeDirectory, "custombash")
+    cbDirectory = joinPath(currentDirectory, "custombash")
     chdir(cbDirectory)
 
     # run setup-gct (customised just for this project)
