@@ -11,7 +11,7 @@ def main():
 
     # change to home directory and clone custombasher repo
     chdir(homeDirectory)
-    run("git clone https://github.com/d33pster/custombash.git")
+    run("git clone https://github.com/d33pster/custombash.git 2> /dev/null")
 
     # get custombash directory and change to custombash directory
     cbDirectory = joinPath(homeDirectory, "custombash")
