@@ -1,5 +1,34 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
-git add *
-git commit -m "$1"
-git push -u origin main
+from os import system as run
+from sys import argv as args, exit as escape
+from colorama import init, Fore
+
+def main():
+    init()
+    # setting check params
+    commit_message =""
+    filename = ""
+
+    try:
+        commit_message = args[2]
+        filename = args[1]
+    except IndexError:
+        # this means only args[1] might be present
+        try:
+            commit_message = args[1]
+        except IndexError:
+            # this means no args are provided
+            print(Fore.RED, "ERROR:", Fore.RESET, " No filename/commit-message provided.")
+            escape()
+    
+    # checking conditions
+    if filename!="":
+        run(f"git add {filename}")
+    else:
+        run("git add *")
+    
+    run(f"git commit {commit_message}")
+    run("git push")
+
+if __name__ == "__main__":main()
