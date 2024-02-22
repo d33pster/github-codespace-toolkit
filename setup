@@ -5,9 +5,21 @@ from os.path import join as joinPath, dirname, exists as there
 from shutil import copyfile
 from colorama import init as colorama_init, Fore
 from re import search
-import subprocess
+from sys import argv as args
 
 def main():
+    # check param (shell name)
+    checkflag = True
+    shell = "bash"
+    
+    try:
+        args[1]
+    except IndexError:
+        checkflag = False
+    
+    if(checkflag):
+        shell = args[1]
+
     colorama_init()
     with open(joinPath(pwd(), "main", "gct-version"), "r") as vers:
         version = vers.read().replace("\n","")
@@ -35,7 +47,7 @@ def main():
         file = file.replace("\n", "")
         if search("-run$", file)!=None:
             print(Fore.RED, "INFO", Fore.RESET, f" : Running {file.split('-')[1]}")
-            run(f"python {joinPath(mainDirectory, file)}")
+            run(f"python {joinPath(mainDirectory, file)} {shell}")
         else:
             if there(joinPath(target, file)):
                 print(Fore.RED, "INFO", Fore.RESET, f" : Found existing file -> {file}")

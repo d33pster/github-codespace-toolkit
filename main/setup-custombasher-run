@@ -17,11 +17,8 @@ def main():
     cbDirectory = joinPath(homeDirectory, "custombash")
     chdir(cbDirectory)
 
-    # run prep-lin
-    subprocess.Popen(["./prep-lin"]).wait()
-
-    # run setup-lin
-    subprocess.Popen(["./setup-lin", "bash"]).wait()
+    # run setup-gct (customised just for this project)
+    subprocess.Popen(["./setup-gct", f"{args[1]}"]).wait()
 
     # delete custombash directory
     chdir(homeDirectory)
