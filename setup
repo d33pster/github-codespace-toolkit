@@ -54,6 +54,17 @@ def main():
                 run(f"rm -rf {joinPath(target, file)}")
                 print(Fore.RED, "INFO", Fore.RESET, f" : Deleted existing file -> {file}")
             copyfile(joinPath(mainDirectory, file), joinPath(target, file))
+            run(f"chmod a+x {joinPath(target, file)}")
             print(Fore.RED, "INFO", Fore.RESET, f" : Copied file -> {file}")
+        
+    # run update once
+    chdir(target)
+
+    print(Fore.RED, "INFO", Fore.RESET, " : Updating Repo")
+    for file in filenames:
+        file = file.replace("\n", "")
+        if search("-run$", file)==None:
+            print(Fore.RED, "INFO", Fore.RESET, f" : updating -> {file}")
+            run(f"{joinPath(target, 'update')} {file} \"GitHub CodeSpace Toolkit\"")
 
 if __name__=="__main__":main()
