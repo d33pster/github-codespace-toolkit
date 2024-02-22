@@ -65,6 +65,9 @@ def main():
         file = file.replace("\n", "")
         if search("-run$", file)==None:
             print(Fore.RED, "INFO", Fore.RESET, f" : updating -> {file}")
-            run(f"{joinPath(target, 'update')} {file} \"GitHub CodeSpace Toolkit\"")
+            run(f"{joinPath(target, 'update')} {joinPath(target, file)} \"GitHub CodeSpace Toolkit\"")
+    
+    # acknowledge
+    print(Fore.GREEN, "Installed GitHub CodeSpace Toolkit", Fore.RESET)
 
 if __name__=="__main__":main()
