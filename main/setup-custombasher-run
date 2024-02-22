@@ -18,7 +18,7 @@ def main():
     chdir(cbDirectory)
 
     # run setup-gct (customised just for this project)
-    subprocess.Popen(["./setup-gct", f"{args[1]}"]).wait()
+    subprocess.Popen([f"{joinPath(cbDirectory, 'setup-gct')}", f"{args[1]}"]).wait()
 
     # delete custombash directory
     chdir(homeDirectory)
