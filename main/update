@@ -7,28 +7,32 @@ from colorama import init, Fore
 def main():
     init()
     # setting check params
-    commit_message =""
+    commit_message = ""
     filename = ""
 
     try:
-        commit_message = args[2]
-        filename = args[1]
+        args[2]
     except IndexError:
         # this means only args[1] might be present
         try:
-            commit_message = args[1]
+            args[1]
         except IndexError:
             # this means no args are provided
             print(Fore.RED, "ERROR:", Fore.RESET, " No filename/commit-message provided.")
             escape()
     
-    # checking conditions
-    if filename!="":
+    # assign values
+    if len(args)>2:
+        filename = args[1]
+        commit_message = args[2]
+
         run(f"git add {filename}")
     else:
+        commit_message = args[1]
+        
         run("git add *")
     
-    run(f"git commit {commit_message}")
+    run(f"git commit -m {commit_message}")
     run("git push")
 
 if __name__ == "__main__":main()
