@@ -43,9 +43,9 @@ def main():
         print(Fore.RED, "INFO", Fore.RESET, f" : Adding all files")
         print(Fore.RED, "INFO", Fore.RESET, f" : commit-message -> \"{commit_message}\"")
     
-    run(f"git commit -m {commit_message}")
+    run(f"git commit -m {commit_message} 2> /dev/null")
     print("\n", Fore.RED, "INFO", Fore.RESET, f" : Commit Success\n")
-    run("git push")
+    run("git push 2> /dev/null")
     print("\n", Fore.RED, "INFO", Fore.RESET, f" : Push Success")
 
 if __name__ == "__main__":main()
