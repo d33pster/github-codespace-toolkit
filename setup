@@ -45,6 +45,8 @@ def main():
     print(Fore.RED, "INFO", Fore.RESET, f" : Resolved target Directory -> {target}")
     for file in filenames:
         file = file.replace("\n", "")
+        if(file == "custombash"):
+            continue
         if search("-run$", file)!=None:
             print(Fore.RED, "INFO", Fore.RESET, f" : Running {file.split('-')[1]}")
             run(f"python {joinPath(mainDirectory, file)} {shell}")

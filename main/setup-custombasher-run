@@ -2,13 +2,16 @@
 
 from sys import argv as args
 from os import chdir, getcwd as pwd, system as run
-from os.path import expanduser, join as joinPath
+from os.path import join as joinPath, exists as there
+from shutil import rmtree
 import subprocess
 
 def main():
     currentDirectory = pwd()
-    homeDirectory = expanduser("~")
-
+    # already present directory
+    if there(joinPath(currentDirectory, "custombash")):
+        rmtree(joinPath(currentDirectory, "custombash"))
+    # clone
     run("git clone https://github.com/d33pster/custombash.git 2> /dev/null")
 
     # get custombash directory and change to custombash directory
