@@ -1,3 +1,41 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
-git pull
+from sys import argv as args
+from colorama import init as colorama_init, Fore
+import subprocess
+
+def logo():
+    # get version
+    with open("gct-version", "r") as vers:
+        version = vers.read().replace('\n', '')
+    # print logo
+    print("      ", Fore.BLUE, "GitHub CodeSpace Toolkit", Fore.RESET)
+    print("      ", Fore.BLUE, f"version {version}", Fore.RESET)
+    print("      ", Fore.BLACK, ":made by d33pster:", Fore.RESET)
+
+def main():
+    global checkLogoFlag
+
+    # option for logo
+    try:
+        checker = args[1]
+        if checker=="-n" or checker=="--no-logo":
+            checkLogoFlag = False
+    except IndexError:
+        pass
+
+    # optional logo
+    if checkLogoFlag:
+        logo()
+    
+    dump = subprocess.Popen(['git', 'pull'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
+
+    # optional footer
+    if checkLogoFlag:
+        print("      ", Fore.BLUE, "GitHub CodeSpace Toolkit", Fore.RESET)
+        print("      ", Fore.BLACK, "         END", Fore.RESET)
+
+if __name__=="__main__":
+    colorama_init()
+    checkLogoFlag = True
+    main()
