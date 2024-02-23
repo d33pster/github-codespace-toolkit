@@ -69,11 +69,10 @@ def main():
     
     # run commands
     ## add
-    print(Fore.RED, "INFO", Fore.RESET, f" : Adding")
     for file in filenames:
         run(f"git add {file}")
         if file == "*":
-            print(Fore.RED, "INFO", Fore.RESET, f" : All Files")
+            print(Fore.RED, "INFO", Fore.RESET, f" : Adding all files")
         else:
             print(Fore.RED, "INFO", Fore.RESET, f" : filename -> {basename(file)}")
     print(Fore.RED, "INFO", Fore.RESET, f" : Added.")
