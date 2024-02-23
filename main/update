@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
 from os import system as run
+from os.path import basename
 from sys import argv as args, exit as escape
 from colorama import init as colorama_init, Fore
-import getopt, subprocess
+import subprocess
+from re import search
 
 def logo():
     # get version
@@ -25,45 +27,40 @@ def main():
     global checkLogoFlag
     # get args list
     arglist = args[1:]
-    # set options
-    options = "hmnf:"
-    # set long options
-    longOptions = [
-        'help',
-        'message',
-        'no-logo',
-        'files'
-    ]
 
     # set default variables
     commit_message = "update"
     filenames = ['*']
 
-    # catch options
-    try:
-        # parse args
-        arguments, values =getopt.getopt(arglist, options, longOptions)
-        # check each arg
-        for currentArg, currentVal in arguments:
-            if currentArg in ('-h', '--help'):
-                showhelp()
-                escape()
-            elif currentArg in ('-m', '--message'):
-                for i in range(len(args)):
-                    if args[i] == '-m' or args[i] == '--message':
-                        commit_message = args[i+1]
-            elif currentArg in ('-n', '--no-logo'):
-                checkLogoFlag = False
-            elif currentArg in ('-f', '-files'):
-                filenames = []
-                for i in range(len(args)):
-                    if args[i]=="-f" or args[i]=="--files":
-                        for j in range(i+1, len(args)):
-                            filenames.append(args[j])
+    # parse the args and print error if any unknown option
+    arguments = []
+    for arg in arglist:
+        if search("-/*", arg):
+            arguments.append(arg)
+    for arg in arguments:
+        if arg not in ['-h','--help','-m','--message','-n','--no-logo','-f','--files']:
+            error = f"option {arg} not recognised"
+            print(Fore.RED, "ERROR", Fore.RESET, f" : {error}")
+            escape()
 
-    except getopt.error as error:
-        print(Fore.RED, "INFO", Fore.RESET, " : ", str(error))
-    
+    # option catcher
+    for arg in arglist:
+        if arg in ['-h', '--help']:
+            showhelp()
+            escape()
+        elif arg in ['-n', '--no-logo']:
+            checkLogoFlag = False
+        elif arg in ['-m', '--message']:
+            for i in range(len(args)):
+                if args[i] == "-m" or args[i] == "--message":
+                    commit_message = args[i+1]
+        elif arg in ['-f', '--files']:
+            filenames = []
+            for i in range(len(args)):
+                if args[i]=="-f" or args[i]=="--files":
+                    for j in range(i+1, len(args)):
+                        filenames.append(args[j])
+
     # show logo
     if(checkLogoFlag):
         logo()
@@ -73,12 +70,10 @@ def main():
     print(Fore.RED, "INFO", Fore.RESET, f" : Adding")
     for file in filenames:
         run(f"git add {file}")
-        filename = file.split('/')
-        filename = filename[len(filename)-1]
-        if filename == "*":
+        if file == "*":
             print(Fore.RED, "INFO", Fore.RESET, f" : All Files")
         else:
-            print(Fore.RED, "INFO", Fore.RESET, f" : filename -> {filename}")
+            print(Fore.RED, "INFO", Fore.RESET, f" : filename -> {basename(file)}")
     print(Fore.RED, "INFO", Fore.RESET, f" : Added.")
 
     ## commit
@@ -87,7 +82,7 @@ def main():
 
     ## push
     # run("git push &> /dev/null")
-    dump = subprocess.Popen(['git','push','2>','/dev/null']).wait()
+    dump = subprocess.Popen(['git','push'], stdout=subprocess.DEVNULL).wait()
     print(Fore.RED, "INFO", Fore.RESET, f" : done.")
 
     # acknowledge

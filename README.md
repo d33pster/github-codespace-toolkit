@@ -15,18 +15,18 @@ Github CodeSpace Toolkit is a lightweight easy to install toolkit to keep you co
 
 #### Installation
 ```console
-# Run all the following commands in your github codespace terminal
+## Run all the following commands in your github codespace terminal
 
-## clone the repo
+### clone the repo
 $ git clone https://github.com/d33pster/github-codespace-toolkit.git
 
-## go inside the cloned directory
+### go inside the cloned directory
 $ cd github-codespace-toolkit
 
-## run setup
+### run setup
 $ ./setup
 
-### NOTE: Restart terminal
+#### NOTE: Restart terminal
 ```
 
 #### Usage
@@ -34,7 +34,7 @@ $ ./setup
 ###### (i) update command
 update command can be used to easily push multiple files using one single command
 ```console
-# update command
+## update command
 $ ./update -h
 usage: 
     -h | --help    : Display this help module
@@ -43,17 +43,17 @@ usage:
 ```
 ###### (ii) pull command
 ```console
-# pull command
+## pull command
 $ ./pull
 ```
 ##### 2. Custombasher (Bonus)
 Project Custombasher integrates sequences of commonly used bash commands into single small commands.
 ```console
-# for custombasher help run
+## for custombasher help run
 $ help
 ```
 #### Uninstall
 ```console
-# uninstall command
+## uninstall command
 $ ./uninstall-github-codespace-toolkit
 ```
