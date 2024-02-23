@@ -64,7 +64,7 @@ def main():
                         filenames.append(args[j])
 
     # show logo
-    if(checkLogoFlag):
+    if checkLogoFlag:
         logo()
     
     # run commands
@@ -88,8 +88,9 @@ def main():
     print(Fore.RED, "INFO", Fore.RESET, f" : done.")
 
     # acknowledge
-    print("      ", Fore.BLUE, "GitHub CodeSpace Toolkit", Fore.RESET)
-    print("      ", Fore.BLACK, "         END", Fore.RESET)
+    if checkLogoFlag:
+        print("      ", Fore.BLUE, "GitHub CodeSpace Toolkit", Fore.RESET)
+        print("      ", Fore.BLACK, "         END", Fore.RESET)
 
 if __name__=="__main__":
     checkLogoFlag = True
