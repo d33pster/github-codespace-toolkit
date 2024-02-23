@@ -68,16 +68,19 @@ def main():
     
     print(Fore.RED, "INFO", Fore.RESET, " : added entry in .gitignore file")
     
-    run(f"{joinPath(target, 'update')} {joinPath(target, '.gitignore')} \".gitignore file updated by GCT\"")
+    run(f"{joinPath(target, 'update')} -n -m \".gitignore file updated by GCT\" -f {joinPath(target, '.gitignore')}")
 
     print(Fore.RED, "INFO", Fore.RESET, " : Updated .gitignore file")
 
     print(Fore.RED, "INFO", Fore.RESET, " : Updating Repo")
+    files = ""
     for file in filenames:
         file = file.replace("\n", "")
         if search("-run$", file)==None:
-            print(Fore.RED, "INFO", Fore.RESET, f" : updating -> {file}")
-            run(f"{joinPath(target, 'update')} {joinPath(target, file)} \"GitHub CodeSpace Toolkit\"")
+            files = files + " " + joinPath(target, file)
+
+        
+    run(f"{joinPath(target, 'update')} -n -m \"GitHub CodeSpace Toolkit\" -f {files.strip()}")
     
     # update git rule
     run("git config advice.addIgnoredFile false")
