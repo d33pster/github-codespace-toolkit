@@ -7,6 +7,10 @@ from colorama import init as colorama_init, Fore
 from re import search
 from sys import argv as args
 
+def logger_init(target: str):
+    if not there(joinPath(target, '.log')):
+        run(f"touch {joinPath(target, ".log")}")
+
 def main():
     # check param (shell name)
     checkflag = True
@@ -20,7 +24,6 @@ def main():
     if(checkflag):
         shell = args[1]
 
-    colorama_init()
     with open(joinPath(pwd(), "main", "gct-version"), "r") as vers:
         version = vers.read().replace("\n","")
     print("      ", Fore.BLUE, "GitHub CodeSpace Toolkit", Fore.RESET)
@@ -42,6 +45,8 @@ def main():
     print(Fore.RED, "INFO", Fore.RESET, " : Retreived Filenames")
     # run files that need running || copy files that need copying
     target = dirname(currentDirectory)
+    # init logger
+    logger_init(target=target)
     print(Fore.RED, "INFO", Fore.RESET, f" : Resolved target Directory -> {target}")
     for file in filenames:
         file = file.replace("\n", "")
@@ -89,4 +94,6 @@ def main():
     # acknowledge
     print(Fore.GREEN, "Installed GitHub CodeSpace Toolkit", Fore.RESET)
 
-if __name__=="__main__":main()
+if __name__=="__main__":
+    colorama_init()
+    main()
