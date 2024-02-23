@@ -59,8 +59,18 @@ def main():
             run(f"chmod a+x {joinPath(target, file)}")
             print(Fore.RED, "INFO", Fore.RESET, f" : Copied file -> {file}")
         
-    # run update once
+    # run update to push the changes made by the setup
     chdir(target)
+
+    # create gitignore file
+    with open(".gitignore", "a") as gitignore:
+        gitignore.write("\ngithub-codespace-toolkit\n")
+    
+    print(Fore.RED, "INFO", Fore.RESET, " : added entry in .gitignore file")
+    
+    run(f"{joinPath(target, 'update')} {joinPath(target, '.gitignore')} \".gitignore file updated by GCT\"")
+
+    print(Fore.RED, "INFO", Fore.RESET, " : Updated .gitignore file")
 
     print(Fore.RED, "INFO", Fore.RESET, " : Updating Repo")
     for file in filenames:
