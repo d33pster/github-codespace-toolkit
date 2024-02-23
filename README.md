@@ -1,5 +1,5 @@
-# <center>GitHub Codespace Toolkit </center>
-<p><center>:made by d33pster:</center></p>
+# <p align='center'>GitHub Codespace Toolkit</p>
+<p align='center'>:made by d33pster:</p>
 <p align='center'>
     <a href='#Installation'>Installation</a>
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
