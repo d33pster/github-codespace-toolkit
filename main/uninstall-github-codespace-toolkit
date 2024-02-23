@@ -7,6 +7,17 @@ from os.path import join as joinPath, expanduser, basename, exists as there
 from os import getcwd as pwd, chdir, system as run, popen as getOutputOf
 from sys import argv as args
 from re import search
+from datetime import datetime
+
+def logger(target: str, entry: str):
+    currentDateTime = datetime.now()
+    with open(joinPath(target, ".log"), "a") as logfile:
+        logfile.write(f"\nEntry: {currentDateTime.date()}, {currentDateTime.hour}:{currentDateTime.minute}:{currentDateTime.second}\n")
+        logfile.write(entry)
+
+def loggerEND(target: str):
+    with open(joinPath(target, ".log"), "a") as logfile:
+        logfile.write("\nENTRY END\n")
 
 def logo():
     # get version
@@ -19,6 +30,7 @@ def logo():
 
 def main():
     global checkLogoFlag
+    target = pwd()
 
     # option for logo
     try:
@@ -26,15 +38,14 @@ def main():
         if checker=="-n" or checker=="--no-logo":
             checkLogoFlag = False
     except IndexError:
-        pass
+        logger(target=target, entry="LOGO CHECK PASSED: Logo will be printed.")
+        loggerEND(target=target)
 
     # optional logo
     if checkLogoFlag:
         logo()
     
     print("      ", Fore.GREEN, "Uninstallation in progress", Fore.RESET)
-
-    target = pwd()
 
     # delete files
     filelist = [
