@@ -70,11 +70,12 @@ def main():
     # run commands
     ## add
     for file in filenames:
-        run(f"git add {file}")
+        # run(f"git add {file}")
         if file == "*":
             print(Fore.RED, "INFO", Fore.RESET, f" : Adding all files")
         else:
             print(Fore.RED, "INFO", Fore.RESET, f" : filename -> {basename(file)}")
+        dump = subprocess.Popen(['git', 'add', f'{file}'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
     print(Fore.RED, "INFO", Fore.RESET, f" : Added.")
 
     ## commit
