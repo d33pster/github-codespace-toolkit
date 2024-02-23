@@ -3,49 +3,98 @@
 from os import system as run
 from sys import argv as args, exit as escape
 from colorama import init as colorama_init, Fore
+import getopt, subprocess
 
-def main():
-    colorama_init()
+def logo():
     # get version
     with open("gct-version", "r") as vers:
-        version = vers.read().replace("\n","")
-    # print version
+        version = vers.read().replace('\n', '')
+    # print logo
     print("      ", Fore.BLUE, "GitHub CodeSpace Toolkit", Fore.RESET)
     print("      ", Fore.BLUE, f"version {version}", Fore.RESET)
     print("      ", Fore.BLACK, ":made by d33pster:", Fore.RESET)
-    # setting check params
-    commit_message = ""
-    filename = ""
 
+def showhelp():
+    logo()
+    print('help')
+    print(Fore.RED, "-h | --help", Fore.RESET, " : Display this help module.")
+    print(Fore.RED, "-m | --message", Fore.RESET, " : Set commit message (accepts String) (default - update)")
+    print(Fore.RED, "-f | --files", Fore.RESET, " : list for files")
+
+def main():
+    global checkLogoFlag
+    # get args list
+    arglist = args[1:]
+    # set options
+    options = "hmnf:"
+    # set long options
+    longOptions = [
+        'help',
+        'message',
+        'no-logo',
+        'files'
+    ]
+
+    # set default variables
+    commit_message = "update"
+    filenames = ['*']
+
+    # catch options
     try:
-        args[2]
-    except IndexError:
-        # this means only args[1] might be present
-        try:
-            args[1]
-        except IndexError:
-            # this means no args are provided
-            print(Fore.RED, "ERROR:", Fore.RESET, " No filename/commit-message provided.")
-            escape()
-    
-    # assign values
-    if len(args)>2:        
-        filename = args[1]
-        commit_message = args[2]
+        # parse args
+        arguments, values =getopt.getopt(arglist, options, longOptions)
+        # check each arg
+        for currentArg, currentVal in arguments:
+            if currentArg in ('-h', '--help'):
+                showhelp()
+                escape()
+            elif currentArg in ('-m', '--message'):
+                for i in range(len(args)):
+                    if args[i] == '-m' or args[i] == '--message':
+                        commit_message = args[i+1]
+            elif currentArg in ('-n', '--no-logo'):
+                checkLogoFlag = False
+            elif currentArg in ('-f', '-files'):
+                filenames = []
+                for i in range(len(args)):
+                    if args[i]=="-f" or args[i]=="--files":
+                        for j in range(i+1, len(args)):
+                            filenames.append(args[j])
 
-        run(f"git add {filename}")
-        print(Fore.RED, "INFO", Fore.RESET, f" : filename -> {filename}")
-        print(Fore.RED, "INFO", Fore.RESET, f" : commit-message -> \"{commit_message}\"")
-    else:        
-        commit_message = args[1]
-        
-        run("git add *")
-        print(Fore.RED, "INFO", Fore.RESET, f" : Adding all files")
-        print(Fore.RED, "INFO", Fore.RESET, f" : commit-message -> \"{commit_message}\"")
+    except getopt.error as error:
+        print(Fore.RED, "INFO", Fore.RESET, " : ", str(error))
     
-    run(f"git commit -m \"{commit_message}\" 2> /dev/null")
-    print(Fore.RED, "INFO", Fore.RESET, f" : Commit Success")
-    run("git push 2> /dev/null")
-    print(Fore.RED, "INFO", Fore.RESET, f" : Push Success")
+    # show logo
+    if(checkLogoFlag):
+        logo()
+    
+    # run commands
+    ## add
+    print(Fore.RED, "INFO", Fore.RESET, f" : Adding")
+    for file in filenames:
+        run(f"git add {file}")
+        filename = file.split('/')
+        filename = filename[len(filename)-1]
+        if filename == "*":
+            print(Fore.RED, "INFO", Fore.RESET, f" : All Files")
+        else:
+            print(Fore.RED, "INFO", Fore.RESET, f" : filename -> {filename}")
+    print(Fore.RED, "INFO", Fore.RESET, f" : Added.")
 
-if __name__ == "__main__":main()
+    ## commit
+    run(f"git commit -m \"{commit_message}\"")
+    print(Fore.RED, "INFO", Fore.RESET, f" : Commit Success.")
+
+    ## push
+    # run("git push &> /dev/null")
+    dump = subprocess.Popen(['git','push','2>','/dev/null']).wait()
+    print(Fore.RED, "INFO", Fore.RESET, f" : done.")
+
+    # acknowledge
+    print(Fore.BLUE, "GitHub CodeSpace Toolkit", Fore.RESET)
+    print(Fore.BLACK, "         END", Fore.RESET)
+
+if __name__=="__main__":
+    checkLogoFlag = True
+    colorama_init()
+    main()
