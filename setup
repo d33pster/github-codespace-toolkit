@@ -79,6 +79,10 @@ def main():
             print(Fore.RED, "INFO", Fore.RESET, f" : updating -> {file}")
             run(f"{joinPath(target, 'update')} {joinPath(target, file)} \"GitHub CodeSpace Toolkit\"")
     
+    # update git rule
+    run("git config advice.addIgnoredFile false")
+    print(Fore.RED, "INFO", Fore.RESET, " : Updated git rule")
+    
     # acknowledge
     print(Fore.GREEN, "Installed GitHub CodeSpace Toolkit", Fore.RESET)
 
