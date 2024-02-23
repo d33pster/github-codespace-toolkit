@@ -1,0 +1,91 @@
+#!/usr/bin/env python3
+
+## unisntaller
+
+from colorama import init as colorama_init, Fore
+from os.path import join as joinPath, expanduser, basename, exists as there
+from os import getcwd as pwd, chdir, system as run, popen as getOutputOf
+from sys import argv as args
+from re import search
+
+def logo():
+    # get version
+    with open("gct-version", "r") as vers:
+        version = vers.read().replace('\n', '')
+    # print logo
+    print("      ", Fore.BLUE, "GitHub CodeSpace Toolkit", Fore.RESET)
+    print("      ", Fore.BLUE, f"version {version}", Fore.RESET)
+    print("      ", Fore.BLACK, ":made by d33pster:", Fore.RESET)
+
+def main():
+    global checkLogoFlag
+
+    # option for logo
+    try:
+        checker = args[1]
+        if checker=="-n" or checker=="--no-logo":
+            checkLogoFlag = False
+    except IndexError:
+        pass
+
+    # optional logo
+    if checkLogoFlag:
+        logo()
+    
+    print("      ", Fore.GREEN, "Uninstallation in progress", Fore.RESET)
+
+    target = pwd()
+
+    # delete files
+    filelist = [
+        'pull',
+        'update',
+        'gct-version',
+    ]
+
+    for file in filelist:
+        if not there(joinPath(target, file)):
+            print(Fore.RED, "DELETE-ERROR", Fore.RESET, f" : {joinPath(target, file)} not found.")
+        else:
+            run(f"rm -rf {joinPath(target, file)}")
+            print(Fore.RED, "DELETE", Fore.RESET, f" : {joinPath(target, file)}")
+    
+    # uninstall custombasher #
+    
+    # get all rc file names
+    rcfilenames = []
+    # go to home directory
+    home = expanduser('~')
+    chdir(home)
+    # get all files list and iterate to find rc files
+    allfilelist = getOutputOf('ls -a').readlines()
+    for file in allfilelist:
+        file = file.replace("\n", "")
+        if search("rc$", file)!=None:
+            rcfilenames.append(file)
+    # check each file for the line "source ~/.custom-linux-bash" and remove it
+    for file in rcfilenames:
+        with open(joinPath(home, file), 'r') as rcfile:
+            rcfilecontent = rcfile.readlines()
+        for i in range(len(rcfilecontent)):
+            line = rcfilecontent[i].replace("\n","")
+            if line=="source ~/.custom-linux-bash":
+                rcfilecontent[i] = ""
+        with open(joinPath(home, file), 'w') as rcfile:
+            for content in rcfilecontent:
+                rcfile.write(content)
+        print(Fore.RED, "UPDATE", Fore.RESET, f" : {joinPath(home, file)}")
+
+    # optional footer logo
+    if checkLogoFlag:
+        print("      ", Fore.BLUE, "GitHub CodeSpace Toolkit", Fore.RESET)
+        print("      ", Fore.BLACK, "         END", Fore.RESET)
+    
+    # silently delete yourself
+    chdir(target)
+    run("rm -rf uninstall-github-codespace-toolkit")
+
+if __name__=="__main__":
+    checkLogoFlag = True
+    colorama_init()
+    main()
