@@ -1,4 +1,5 @@
 gct-version
 update
 pull
-main/custombash/*
+uninstall-github-codespace-toolkit
+main/custombash/
