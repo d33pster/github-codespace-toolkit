@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from os import chdir, getcwd as pwd, popen as getOutputOf, system as run
-from os.path import join as joinPath, dirname, exists as there
+from os.path import join as joinPath, dirname, exists as there, expanduser
 from shutil import copyfile
 from colorama import init as colorama_init, Fore
 from re import search
@@ -69,7 +69,7 @@ def main():
 
     # create gitignore file
     with open(".gitignore", "a") as gitignore:
-        gitignore.write("\ngithub-codespace-toolkit\n")
+        gitignore.write("\ngithub-codespace-toolkit\n.gct-files")
     
     print(Fore.RED, "INFO", Fore.RESET, " : added entry in .gitignore file")
     
@@ -90,6 +90,17 @@ def main():
     # update git rule
     run("git config advice.addIgnoredFile false")
     print(Fore.RED, "INFO", Fore.RESET, " : Updated git rule")
+    
+    # export current path as an env variable
+    with open(joinPath(expanduser('~'), '.bashrc'), 'a') as rcfile:
+        rcfile.write(f'\nexport configuration=\"{currentDirectory}\"')
+    print(Fore.RED, "INFO", Fore.RESET, " : Exported Configurations")
+    
+    # export file list
+    with open(joinPath(target, '.gct-files'), 'w') as gctfiles:
+        for file in filenames:
+            gctfiles.write(file)
+    print(Fore.RED, "INFO", Fore.RESET, " : Created file list")
     
     # acknowledge
     print(Fore.GREEN, "Installed GitHub CodeSpace Toolkit", Fore.RESET)
