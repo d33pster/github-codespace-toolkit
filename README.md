@@ -41,7 +41,16 @@ usage:
     -m | --message : commit message (accepts string) (default - "udpate")
     -f | --files   : files (default - ALL)
 ```
-###### (ii) pull command
+###### (ii) reconfigure command
+suppose you are working in a specific directory which is not the one where you installed this toolkit, this command will be helpful
+```console
+## before you can begin with reconfigure command, run
+$ export configuration=<your path>:$configuration
+
+## then run this in the original directory
+$ ./reconfigure
+```
+###### (iii) pull command
 ```console
 ## pull command
 $ ./pull
