@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+
+from os import environ as envar, chdir, getcwd as pwd, popen as getOutoutOf
+from os.path import join as joinPath
+from shutil import copyfile
+from re import search
+from colorama import init as colorama_init, Fore
+
+class assess:
+    def __init__(self, configurations: str, currentloc: str):
+        # set class variables
+        self._configs = configurations.split(':')
+        self._loc = currentloc
+    
+    def reconfigure(self):
+        # get actual file list
+        with open(joinPath(self._loc, '.gct-files'), 'r') as gctfiles:
+            self._files = gctfiles.read().split('\n')
+        
+        # change directory to check config directories
+        for config in self._configs:
+            # do not tamper the original location
+            if config!=self._loc:
+                try:
+                    chdir(config)
+                    print(Fore.RED, "INFO", Fore.RESET, f" : Config: {config}")
+                except FileNotFoundError:
+                    print(Fore.RED, "INFO", Fore.RESET, f" : Config \"{config}\" is not valid. please check again.")
+                    exit(1)
+                
+                # get files in the changed directory
+                localfiles = getOutoutOf('ls').read().split('\n')
+                
+                # check if the actual files are present among the localfiles except -run files
+                for file in self._files:
+                    # if file is not a -run file and file is not present in the configurable directory
+                    if search('-run$', file)==None and file not in localfiles:
+                        # copy the files
+                        try:
+                            # copy from the original install directory to the configurable directory
+                            copyfile(joinPath(self._loc, file), joinPath(config, file))
+                            print(Fore.RED, "INFO", Fore.RESET, f" : reconfigured {file}")
+                        except FileNotFoundError:
+                            # if error
+                            print(Fore.RED, "ERROR", Fore.RESET, f" : src->{joinPath(self._loc, file)} dest->{joinPath(config, file)}")
+
+def logo():
+    # get version
+    with open("gct-version", "r") as vers:
+        version = vers.read().replace('\n', '')
+    # print logo
+    print("      ", Fore.BLUE, "GitHub CodeSpace Toolkit", Fore.RESET)
+    print("      ", Fore.BLUE, f"version {version}", Fore.RESET)
+    print("      ", Fore.BLACK, ":made by d33pster:", Fore.RESET)
+
+def main():
+    global checklogoFlag
+    # print top logo
+    if checklogoFlag:
+        logo()
+    # get configurations
+    configurations = envar.get('configuration')
+    # define control
+    control = assess(configurations=configurations, currentloc=pwd())
+    
+    # reconfigure
+    control.reconfigure()
+    
+    # end logo
+    if checklogoFlag:
+        print("      ", Fore.BLUE, "GitHub CodeSpace Toolkit", Fore.RESET)
+        print("      ", Fore.BLACK, "         END", Fore.RESET)
+
+if __name__=="__main__":
+    checklogoFlag = True
+    colorama_init()
+    main()
